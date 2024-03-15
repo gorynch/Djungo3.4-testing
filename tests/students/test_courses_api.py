@@ -62,8 +62,8 @@ def test_get_course_by_id(client, course_factory):
     course = course_factory(_quantity=courses_quantity)
     filter_course_id = course[randrange(courses_quantity)].id
 
-    url = reverse('courses-list') + f'?id={filter_course_id}'
-    response = client.get(url)
+    url = reverse('courses-list')
+    response = client.get(url, {'id': filter_course_id})
 
     assert response.status_code == status.HTTP_200_OK
     assert len(response.data) == 1
@@ -76,9 +76,9 @@ def test_get_course_by_name(client, course_factory):
     courses = course_factory(_quantity=courses_quantity)
     filter_course_name = courses[randrange(courses_quantity)].name
 
-    url = reverse('courses-list') + f'?name={filter_course_name}'
+    url = reverse('courses-list')
+    response = client.get(url, {'name': filter_course_name})
 
-    response = client.get(url)
     assert response.status_code == status.HTTP_200_OK
     assert len(response.data) == 1
     assert response.data[0]['name'] == filter_course_name
